@@ -1,50 +1,12 @@
 <html>
-  <script src=https://d3js.org/d3.v4.min.js></script>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </head>
   <body>
-    <canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;">
-      Your browser does not support the HTML5 canvas tag.
-    </canvas>
+    <div id="app">
+      <a v-link="{ path: '/mandelbrot' }">Mandelbrot</a>
+      <router-view></router-view>
+    </div>
+    <script src="dist/build.js"></script>
   </body>
-
-  <script>
-    var iterlimit = 200;
-    function mandelbrot(c) {
-      z = [0,0];
-      for (var i=0;i<iterlimit;i++) {
-        if (Math.pow(z[0]+c[0],2) + Math.pow(z[1]+c[1],2) > 4) {
-          break;
-        } else {
-          z = [Math.pow(z[0],2) - Math.pow(z[1],2) + c[0], 2*z[0]*z[1]+c[1]];
-        }
-      }
-      return i;
-    }
-
-    var width = 800;
-    var height = 600;
-    var xrange = [-2,1];
-    var yrange = [-1,1];
-    var c=document.getElementById("myCanvas");
-    var ctx=c.getContext("2d");
-    var imgData=ctx.createImageData(width, height);
-    var pixel = 0;
-    for (var i=0;i<imgData.data.length;i+=4) {
-      pixel++;
-      var x = (pixel%width)/width*(xrange[1]-xrange[0]) - (xrange[1]-xrange[0])/2;
-      var y = Math.floor(pixel/width)/height*(yrange[1]-yrange[0]) - (yrange[1]-yrange[0])/2;
-      var iters = mandelbrot([x,y]);
-      if(iters == iterlimit) {
-        imgData.data[i+0]=0;
-        imgData.data[i+1]=0;
-        imgData.data[i+2]=0;
-        imgData.data[i+3]=255;
-      } else {
-        imgData.data[i+0]=255;
-        imgData.data[i+1]=255;
-        imgData.data[i+2]=255;
-        imgData.data[i+3]=255;
-      }
-    }
-    ctx.putImageData(imgData,0,0);
-  </script>
 </html>

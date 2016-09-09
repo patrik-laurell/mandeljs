@@ -1,0 +1,7 @@
+#canvasContainer {
+  float: right;
+}
+
+canvas {
+  display: inline;
+}
