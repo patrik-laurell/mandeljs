@@ -7,23 +7,44 @@
   </body>
 
   <script>
-    function mandelbrot(z,c) {
-      for (var i=0;i<50;i++) {
-        console.log('z = ', z);
+    var iterlimit = 200;
+    function mandelbrot(c) {
+      z = [0,0];
+      for (var i=0;i<iterlimit;i++) {
         if (Math.pow(z[0]+c[0],2) + Math.pow(z[1]+c[1],2) > 4) {
           break;
         } else {
           z = [Math.pow(z[0],2) - Math.pow(z[1],2) + c[0], 2*z[0]*z[1]+c[1]];
         }
       }
-      console.log(i);
+      return i;
     }
-    var a = []
-    for(var i=0; i<600; i++) {
-      for(var j=0; j<800; j++) {
-        a[i*800+j] = mandelbrot([0,0],[0.5,0.2])%50)/50*255);
+
+    var width = 800;
+    var height = 600;
+    var xrange = [-2,1];
+    var yrange = [-1,1];
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    var imgData=ctx.createImageData(width, height);
+    var pixel = 0;
+    for (var i=0;i<imgData.data.length;i+=4) {
+      pixel++;
+      var x = (pixel%width)/width*(xrange[1]-xrange[0]) - (xrange[1]-xrange[0])/2;
+      var y = Math.floor(pixel/width)/height*(yrange[1]-yrange[0]) - (yrange[1]-yrange[0])/2;
+      var iters = mandelbrot([x,y]);
+      if(iters == iterlimit) {
+        imgData.data[i+0]=0;
+        imgData.data[i+1]=0;
+        imgData.data[i+2]=0;
+        imgData.data[i+3]=255;
+      } else {
+        imgData.data[i+0]=255;
+        imgData.data[i+1]=255;
+        imgData.data[i+2]=255;
+        imgData.data[i+3]=255;
       }
     }
-    console.log(a);
+    ctx.putImageData(imgData,0,0);
   </script>
 </html>
