@@ -1,0 +1,29 @@
+<html>
+  <script src=https://d3js.org/d3.v4.min.js></script>
+  <body>
+    <canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;">
+      Your browser does not support the HTML5 canvas tag.
+    </canvas>
+  </body>
+
+  <script>
+    function mandelbrot(z,c) {
+      for (var i=0;i<50;i++) {
+        console.log('z = ', z);
+        if (Math.pow(z[0]+c[0],2) + Math.pow(z[1]+c[1],2) > 4) {
+          break;
+        } else {
+          z = [Math.pow(z[0],2) - Math.pow(z[1],2) + c[0], 2*z[0]*z[1]+c[1]];
+        }
+      }
+      console.log(i);
+    }
+    var a = []
+    for(var i=0; i<600; i++) {
+      for(var j=0; j<800; j++) {
+        a[i*800+j] = mandelbrot([0,0],[0.5,0.2])%50)/50*255);
+      }
+    }
+    console.log(a);
+  </script>
+</html>
